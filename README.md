@@ -42,7 +42,7 @@ Already created:
 Still required:
 
 - `SUPABASE_SECRET_KEY` — Supabase `sb_secret_...`; mark as **Secret**
-- `PUBLIC_SITE_URL` — final Netlify URL; not secret
+- `PUBLIC_SITE_URL` — optional override; Netlify’s built-in site URL is used when omitted
 - `EVENT_CODE` — `TYF-TYO-AW26`; not secret
 
 Required before public email launch:
@@ -82,3 +82,16 @@ Do not upload the ZIP itself as the only repository file.
 - Test duplicate entry and re-entry
 - Export the Excel file
 - Verify email delivery after Resend is connected
+
+
+## Validation status
+
+Completed before packaging:
+
+- JavaScript syntax checks for browser modules and the Netlify Function
+- HTML parsing checks for all nine pages
+- repository structure and referenced asset checks
+- server-side input validation, honeypot protection and duplicate handling
+- output escaping in the administration and reception interfaces
+
+A live end-to-end test still must be completed after Supabase and Netlify secrets are connected. Do not open registration to the public until the production checklist above passes.

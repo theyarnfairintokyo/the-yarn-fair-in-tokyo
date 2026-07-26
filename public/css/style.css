@@ -481,3 +481,9 @@ textarea{
 .login-card{max-width:520px}#qr-reader{max-width:520px;margin:22px 0}
 fieldset{border:1px solid var(--line);border-radius:12px;padding:16px 18px}legend{font-weight:850;padding:0 8px}
 @media(max-width:800px){.metrics{grid-template-columns:1fr}}
+.honeypot{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+@media print{
+  .site-header,.footer,.phase-actions button:not(#save-qr){display:none!important}
+  body{background:#fff!important}
+  .phase-card{border:0!important}
+}
