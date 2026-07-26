@@ -1,3 +1,5 @@
+# THE YARN FAIR IN TOKYO™ — Phase 1 Final Design V2
+
 # THE YARN FAIR IN TOKYO™ — Phase 1 Complete Project
 
 This repository is the deployable **Vite + Supabase + Netlify Functions** Phase 1 application for ANDES JAPAN LLC.
@@ -42,7 +44,7 @@ Already created:
 Still required:
 
 - `SUPABASE_SECRET_KEY` — Supabase `sb_secret_...`; mark as **Secret**
-- `PUBLIC_SITE_URL` — optional override; Netlify’s built-in site URL is used when omitted
+- `PUBLIC_SITE_URL` — final Netlify URL; not secret
 - `EVENT_CODE` — `TYF-TYO-AW26`; not secret
 
 Required before public email launch:
@@ -83,15 +85,19 @@ Do not upload the ZIP itself as the only repository file.
 - Export the Excel file
 - Verify email delivery after Resend is connected
 
+## Final design lock
 
-## Validation status
+- Deep Plum `#4B1E3F`
+- One yarn-ball logo only, in the hero
+- No yarn-ball logo in the header or footer
+- THE YARN FAIR IN TOKYO™ uses the same font family as the rest of the website
+- English navigation shows only:
+  ABOUT / EVENT / EXHIBITORS / REGISTRATION / CONTACT
+- Japanese buttons:
+  詳細はこちら / 来場予約
+- Organizer:
+  ANDES JAPAN LLC / アンデスジャパン合同会社
+- Tagline:
+  Curated for Japan. Connected to the World.
 
-Completed before packaging:
-
-- JavaScript syntax checks for browser modules and the Netlify Function
-- HTML parsing checks for all nine pages
-- repository structure and referenced asset checks
-- server-side input validation, honeypot protection and duplicate handling
-- output escaping in the administration and reception interfaces
-
-A live end-to-end test still must be completed after Supabase and Netlify secrets are connected. Do not open registration to the public until the production checklist above passes.
+Phase 1 registration, QR, staff login, admin and check-in functionality remains unchanged.
