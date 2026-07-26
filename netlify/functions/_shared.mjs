@@ -1,0 +1,3 @@
+import{createClient}from'@supabase/supabase-js';
+export function adminClient(){const u=process.env.VITE_SUPABASE_URL,k=process.env.SUPABASE_SECRET_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY;if(!u||!k)throw new Error('SERVER_SUPABASE_CONFIGURATION_MISSING');return createClient(u,k,{auth:{persistSession:false,autoRefreshToken:false}})}
+export function response(s,b){return{statusCode:s,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'},body:JSON.stringify(b)}}

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="THE YARN FAIR IN TOKYO™ — Curated for Japan. Connected to the World.">
+  <title>THE YARN FAIR IN TOKYO™</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav">
+    <a class="brand-text" href="index.html" aria-label="THE YARN FAIR IN TOKYO home">
+      <span class="brand-name wordmark-font">THE YARN FAIR IN TOKYO™</span>
+      <span class="brand-tagline">Curated for Japan. Connected to the World.</span>
+    </a>
+
+    <button class="menu-button" type="button" aria-label="Menu" onclick="toggleMenu()">☰</button>
+
+    <nav class="nav-links">
+      <a class="nav-item" href="index.html#about" onclick="toggleMenu()">
+        <span>ABOUT</span>
+        <small class="ja">展示会について</small>
+      </a>
+
+      <a class="nav-item" href="index.html#details" onclick="toggleMenu()">
+        <span>EVENT</span>
+        <small class="ja">開催概要</small>
+      </a>
+
+      <a class="nav-item" href="exhibitors.html" onclick="toggleMenu()">
+        <span>EXHIBITORS</span>
+        <small class="ja">出展企業</small>
+      </a>
+
+      <a class="nav-item" href="registration.html" onclick="toggleMenu()">
+        <span>REGISTRATION</span>
+        <small class="ja">来場予約</small>
+      </a>
+
+      <a class="nav-item" href="contact.html" onclick="toggleMenu()">
+        <span>CONTACT</span>
+        <small class="ja">お問い合わせ</small>
+      </a>
+
+      <div class="lang-switch">
+        <button type="button" data-lang="ja" onclick="setLang('ja')">JP</button>
+        <span>/</span>
+        <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<section class="hero">
+  <div>
+    <img class="hero-icon" src="/assets/yarn-ball-logo-deep-plum.png" alt="Yarn ball logo">
+    <h1 class="hero-title wordmark-font">THE YARN FAIR IN TOKYO™</h1>
+
+    <div class="hero-tagline">
+      Curated for Japan.<br>
+      Connected to the World.
+    </div>
+
+    <div class="hero-actions">
+      <a class="btn primary ja" href="#details">詳細はこちら</a>
+      <a class="btn primary en" href="#details">VIEW DETAILS</a>
+
+      <a class="btn ja" href="registration.html">来場予約</a>
+      <a class="btn en" href="registration.html">REGISTER NOW</a>
+    </div>
+  </div>
+</section>
+
+<section class="event-strip">
+  <div class="event-strip-inner">
+    <div class="event-cell">
+      <div class="event-label ja">会期</div>
+      <div class="event-label en">DATE</div>
+      <div class="event-value">2026.10.20<br><small>13:00–19:00</small></div>
+    </div>
+
+    <div class="event-cell">
+      <div class="event-label">&nbsp;</div>
+      <div class="event-value">2026.10.21<br><small>9:30–18:00</small></div>
+    </div>
+
+    <div class="event-cell">
+      <div class="event-label">&nbsp;</div>
+      <div class="event-value">2026.10.22<br><small>9:30–17:00</small></div>
+    </div>
+
+    <div class="event-cell">
+      <div class="event-label ja">会場</div>
+      <div class="event-label en">VENUE</div>
+      <div class="event-value">WITH HARAJUKU HALL</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="kicker">ABOUT</div>
+
+  <div class="about-copy ja">
+    世界各国の紡績メーカーと日本のアパレルブランド、商社、ニッター、OEM企業をつなぐ国際糸展示会です。
+  </div>
+
+  <div class="about-copy en">
+    An international yarn exhibition connecting spinning mills from around the world with
+    Japanese apparel brands, trading companies, knitters and OEM manufacturers.
+  </div>
+</section>
+
+<section class="section soft" id="details">
+  <div class="inner">
+    <div class="kicker">EVENT</div>
+
+    <div class="details-grid">
+      <div class="schedule ja">
+        会期<br>
+        2026.10.20　13:00–19:00<br>
+        2026.10.21　9:30–18:00<br>
+        2026.10.22　9:30–17:00
+      </div>
+
+      <div class="schedule en">
+        DATES &amp; HOURS<br>
+        OCT 20, 2026　13:00–19:00<br>
+        OCT 21, 2026　9:30–18:00<br>
+        OCT 22, 2026　9:30–17:00
+      </div>
+
+      <div class="card">
+        <h2>WITH HARAJUKU HALL</h2>
+
+        <p class="ja">
+          東京都渋谷区神宮前1-14-30<br>
+          JR山手線「原宿駅」徒歩1分<br>
+          東京メトロ「明治神宮前〈原宿〉駅」徒歩1分
+        </p>
+
+        <p class="en">
+          1-14-30 Jingumae, Shibuya-ku, Tokyo<br>
+          1 minute from JR Harajuku Station<br>
+          1 minute from Meiji-jingumae “Harajuku” Station
+        </p>
+
+        <a
+          class="map-link"
+          href="https://maps.google.com/?q=WITH+HARAJUKU+HALL"
+          target="_blank"
+          rel="noopener">
+          GOOGLE MAP
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="kicker">EXPLORE</div>
+
+  <div class="hero-actions" style="justify-content:flex-start">
+    <a class="btn ja" href="exhibitors.html">出展企業を見る</a>
+    <a class="btn en" href="exhibitors.html">VIEW EXHIBITORS</a>
+
+    <a class="btn primary ja" href="registration.html">来場予約</a>
+    <a class="btn primary en" href="registration.html">REGISTER NOW</a>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <strong class="wordmark-font">THE YARN FAIR IN TOKYO™</strong>
+  <p>Curated for Japan. Connected to the World.</p>
+  <p>Organized by ANDES JAPAN LLC<br>アンデスジャパン合同会社</p>
+  <p><a href="mailto:THEYARNFAIRINTOKYO@gmail.com">THEYARNFAIRINTOKYO@gmail.com</a></p>
+  <p>© 2026 ANDES JAPAN LLC. All Rights Reserved.</p>
+</footer>
+<script src="/js/app.js"></script>
+
+</body>
+</html>
