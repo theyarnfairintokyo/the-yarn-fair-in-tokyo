@@ -1,3 +1,25 @@
+# THE YARN FAIR IN TOKYO™ — Operational System V3
+
+This release completes the practical Phase 1 operating functions and adds the exhibitor CMS.
+
+## Implemented
+- Supabase visitor registration
+- QR generation and confirmation page
+- iPad/iPhone camera check-in and re-entry
+- Admin visitor list
+- CSV and Excel export
+- Supabase-backed public exhibitor pages
+- Admin exhibitor CMS
+- Complete JP/EN switching for static and dynamic content
+- Embedded Google Map, venue address and access
+
+## Required before production use
+1. Run `supabase/003_phase1_application_patch.sql`.
+2. Create admin/reception Auth users and run `004_create_first_admin_example.sql` with the real UUID.
+3. Add Netlify environment variables listed in `ENVIRONMENT_VARIABLES_EXAMPLE.txt`.
+4. Verify Resend sender domain before enabling public email delivery.
+5. Test registration, email, QR and check-in on two separate devices.
+
 # THE YARN FAIR IN TOKYO™ — Phase 1 Final Design V2
 
 # THE YARN FAIR IN TOKYO™ — Phase 1 Complete Project

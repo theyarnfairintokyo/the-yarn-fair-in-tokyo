@@ -81,6 +81,7 @@ async function loadAdmin() {
 
   document.querySelector('[data-staff-name]').textContent =
     `${auth.profile.display_name} (${auth.profile.role})`;
+  document.querySelectorAll('[data-admin-only]').forEach(el=>{el.hidden=auth.profile.role!=='admin';});
 
   const { data: registrations, error } = await supabase
     .from('registrations')
@@ -152,6 +153,22 @@ async function loadAdmin() {
       </table>
     </div>`;
 }
+
+
+window.exportCsv = () => {
+  const rows = window.__TYF_EXPORT_ROWS__ || [];
+  if (!rows.length) { alert('No registration data.'); return; }
+  const headers = Object.keys(rows[0]);
+  const quote = value => `"${String(value ?? '').replaceAll('"','""')}"`;
+  const csv = '\ufeff' + [headers.map(quote).join(','), ...rows.map(row => headers.map(h => quote(row[h])).join(','))].join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `TYF_AW2026_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
 
 window.exportExcel = () => {
   const rows = window.__TYF_EXPORT_ROWS__ || [];
