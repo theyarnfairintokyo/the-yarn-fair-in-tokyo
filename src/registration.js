@@ -2,6 +2,20 @@ function checkedValues(form, name) {
   return [...form.querySelectorAll(`[name="${name}"]:checked`)].map(el => el.value);
 }
 
+function field(form, name) {
+  return form.elements.namedItem(name);
+}
+
+function value(form, name) {
+  const element = field(form, name);
+  return element && 'value' in element ? String(element.value).trim() : '';
+}
+
+function checked(form, name) {
+  const element = field(form, name);
+  return Boolean(element && 'checked' in element && element.checked);
+}
+
 function language() {
   return document.documentElement.lang === 'en' ? 'en' : 'ja';
 }
@@ -18,6 +32,7 @@ function messageFor(code, lang) {
     PRIVACY_CONSENT_REQUIRED: ja ? '個人情報の取扱いへの同意が必要です。' : 'Privacy consent is required.',
     VISIT_DATE_REQUIRED: ja ? '来場予定日を1日以上選択してください。' : 'Select at least one planned visit date.',
     ALREADY_REGISTERED: ja ? 'このメールアドレスは既に登録されています。' : 'This email address is already registered.',
+    REQUEST_TIMEOUT: ja ? '通信がタイムアウトしました。もう一度お試しください。' : 'The request timed out. Please try again.',
     REGISTRATION_FAILED: ja ? '登録できませんでした。時間をおいて再度お試しください。' : 'Registration failed. Please try again later.'
   };
   return messages[code] || messages.REGISTRATION_FAILED;
@@ -42,35 +57,52 @@ form?.addEventListener('submit', async event => {
   status.className = 'status-message';
   status.textContent = lang === 'ja' ? '登録しています…' : 'Registering…';
 
-  const payload = {
-    fullName: form.full_name.value,
-    romanName: form.roman_name.value,
-    companyName: form.company_name.value,
-    companyNameEn: form.company_name_en.value,
-    department: form.department.value,
-    positionTitle: form.position_title.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    countryRegion: form.country_region.value,
-    industry: form.industry.value,
-    language: lang,
-    plannedVisitDates,
-    interestMaterials: checkedValues(form, 'interest_materials'),
-    organizerMessage: form.organizer_message.value,
-    privacyConsent: form.privacy_consent.checked,
-    marketingConsent: form.marketing_consent.checked,
-    website: form.website.value
-  };
-
   try {
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const result = await response.json();
+    const payload = {
+      fullName: value(form, 'full_name'),
+      romanName: value(form, 'roman_name'),
+      companyName: value(form, 'company_name'),
+      companyNameEn: value(form, 'company_name_en'),
+      department: value(form, 'department'),
+      positionTitle: value(form, 'position_title'),
+      email: value(form, 'email'),
+      phone: value(form, 'phone'),
+      countryRegion: value(form, 'country_region'),
+      industry: value(form, 'industry'),
+      language: lang,
+      plannedVisitDates,
+      interestMaterials: checkedValues(form, 'interest_materials'),
+      organizerMessage: value(form, 'organizer_message'),
+      privacyConsent: checked(form, 'privacy_consent'),
+      marketingConsent: checked(form, 'marketing_consent'),
+      // Honeypot is optional. An older page did not include this field.
+      website: value(form, 'website')
+    };
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    let response;
+    try {
+      response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    const text = await response.text();
+    let result = {};
+    try {
+      result = text ? JSON.parse(text) : {};
+    } catch {
+      throw Object.assign(new Error(text || `HTTP ${response.status}`), { code: 'REGISTRATION_FAILED' });
+    }
+
     if (!response.ok) {
-      throw Object.assign(new Error(result.message || result.error), { code: result.error });
+      throw Object.assign(new Error(result.message || result.error || `HTTP ${response.status}`), { code: result.error });
     }
 
     localStorage.setItem('tyf-registration-result', JSON.stringify({
@@ -79,10 +111,12 @@ form?.addEventListener('submit', async event => {
     }));
     location.href = '/registration-complete.html';
   } catch (error) {
+    const code = error?.name === 'AbortError' ? 'REQUEST_TIMEOUT' : error?.code;
     status.className = 'status-message status-error';
-    status.textContent = error.message && error.message !== error.code
+    status.textContent = error?.message && error.message !== code && error.name !== 'AbortError'
       ? error.message
-      : messageFor(error.code, lang);
+      : messageFor(code, lang);
     buttons.forEach(button => { button.disabled = false; });
+    console.error('Visitor registration failed:', error);
   }
 });
