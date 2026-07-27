@@ -132,3 +132,36 @@ Do not upload the ZIP itself as the only repository file.
   Curated for Japan. Connected to the World.
 
 Phase 1 registration, QR, staff login, admin and check-in functionality remains unchanged.
+
+## Exhibitor CMS initialization (V1)
+
+1. Run `supabase/005_initialize_exhibitor_cms.sql` in Supabase SQL Editor.
+2. Confirm that the verification result returns the current 17 exhibitors.
+3. Sign in through `/staff-login.html` using the administrator account.
+4. Open `/admin.html` and select **EXHIBITOR CMS**.
+
+This version preserves existing exhibitor/contact master data and links all active exhibitors to event `TYF-TYO-AW26`. The CMS can edit the primary contact on existing companies.
+
+## Phase 2-1 — Exhibitor CMS completed
+
+The administrator can now:
+
+- View all event exhibitors and their publication status
+- Search by company, contact, organization, booth, or email
+- Filter published/unpublished exhibitors
+- Add an exhibitor
+- Edit company names, country, website, Japanese/English descriptions
+- Edit booth number and display order
+- Publish/unpublish an exhibitor
+- Edit the primary contact and email
+- Open the public company page for verification
+- Remove an exhibitor from the current event without deleting its master record
+
+Admin URL: `/staff-login.html` → `/admin.html` → `EXHIBITOR CMS`
+
+
+## Phase 2-1 Login Fix
+
+- Added an explicit submit button type to the staff login form.
+- Made the login script tolerant of missing DOM elements.
+- Added visible error handling and reliable redirect to `/admin.html`.

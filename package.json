@@ -1,13 +1,13 @@
 {
   "name": "the-yarn-fair-in-tokyo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node --check src/registration.js && node --check src/registration-complete.js && node --check src/staff.js && node --check src/supabase.js && node --check netlify/functions/register.mjs"
+    "check": "node --check src/registration.js && node --check src/registration-complete.js && node --check src/staff.js && node --check src/cms.js && node --check src/supabase.js && node --check netlify/functions/register.mjs && node --check netlify/functions/exhibitors.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
