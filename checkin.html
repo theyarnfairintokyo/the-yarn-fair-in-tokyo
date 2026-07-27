@@ -6,42 +6,42 @@
       <span class="brand-tagline">Curated for Japan. Connected to the World.</span>
     </a>
 
-    <button class="menu-button" type="button" aria-label="Menu" onclick="toggleMenu()">☰</button>
+    <button class="menu-button" type="button" aria-label="Menu" data-action="toggle-menu">☰</button>
 
     <nav class="nav-links">
-      <a class="nav-item" href="index.html#about" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="index.html#about" data-action="toggle-menu">
         <span>ABOUT</span>
         <small class="ja">展示会について</small>
       </a>
 
-      <a class="nav-item" href="index.html#details" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="index.html#details" data-action="toggle-menu">
         <span>EVENT</span>
         <small class="ja">開催概要</small>
       </a>
 
-      <a class="nav-item" href="exhibitors.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="exhibitors.html" data-action="toggle-menu">
         <span>EXHIBITORS</span>
         <small class="ja">出展企業</small>
       </a>
 
-      <a class="nav-item" href="registration.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="registration.html" data-action="toggle-menu">
         <span>REGISTRATION</span>
         <small class="ja">来場予約</small>
       </a>
 
-      <a class="nav-item" href="contact.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="contact.html" data-action="toggle-menu">
         <span>CONTACT</span>
         <small class="ja">お問い合わせ</small>
       </a>
 
       <div class="lang-switch">
-        <button type="button" data-lang="ja" onclick="setLang('ja')">JP</button>
+        <button type="button" data-lang="ja" data-set-lang="ja">JP</button>
         <span>/</span>
-        <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
+        <button type="button" data-lang="en" data-set-lang="en">EN</button>
       </div>
     </nav>
   </div>
-</header><section class="phase-shell"><div class="phase-actions"><a class="btn" href="/admin.html">ADMIN</a><button class="btn" onclick="staffLogout()">LOGOUT</button></div><div class="kicker">QR CHECK-IN</div><h1>Reception</h1><button class="btn primary" onclick="startQrScanner()">START CAMERA</button><div id="qr-reader"></div><div class="field" style="max-width:650px"><label>QR token or scanned URL</label><input data-manual-token><button class="btn" onclick="lookupQrToken(document.querySelector('[data-manual-token]').value)">LOOK UP</button></div><div class="phase-card" data-checkin-result></div></section><footer class="footer">
+</header><section class="phase-shell"><div class="phase-actions"><a class="btn" href="/admin.html">ADMIN</a><button class="btn" data-action="staff-logout">LOGOUT</button></div><div class="kicker">QR CHECK-IN</div><h1>Reception</h1><button class="btn primary" data-action="start-qr-scanner">START CAMERA</button><div id="qr-reader"></div><div class="field" style="max-width:650px"><label>QR token or scanned URL</label><input data-manual-token><button class="btn" data-action="lookup-manual-token">LOOK UP</button></div><div class="phase-card" data-checkin-result></div></section><footer class="footer">
   <strong class="wordmark-font">THE YARN FAIR IN TOKYO™</strong>
   <p>Curated for Japan. Connected to the World.</p>
   <p>Organized by ANDES JAPAN LLC<br>アンデスジャパン合同会社</p>

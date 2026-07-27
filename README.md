@@ -1,3 +1,12 @@
+# THE YARN FAIR IN TOKYO™ — Public Release V3.2
+
+## Fixes in V3.2
+- Removed the failed Google Maps iframe/grey placeholder.
+- Kept the direct GOOGLE MAP button.
+- Fixed JP / EN switching on every page.
+- Removed inline JavaScript handlers blocked by the production Content Security Policy.
+- Fixed mobile menu and existing admin/check-in button handlers for the same CSP issue.
+
 # THE YARN FAIR IN TOKYO™ — Operational System V3
 
 This release completes the practical Phase 1 operating functions and adds the exhibitor CMS.

@@ -17,38 +17,38 @@
       <span class="brand-tagline">Curated for Japan. Connected to the World.</span>
     </a>
 
-    <button class="menu-button" type="button" aria-label="Menu" onclick="toggleMenu()">☰</button>
+    <button class="menu-button" type="button" aria-label="Menu" data-action="toggle-menu">☰</button>
 
     <nav class="nav-links">
-      <a class="nav-item" href="index.html#about" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="index.html#about" data-action="toggle-menu">
         <span>ABOUT</span>
         <small class="ja">展示会について</small>
       </a>
 
-      <a class="nav-item" href="index.html#details" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="index.html#details" data-action="toggle-menu">
         <span>EVENT</span>
         <small class="ja">開催概要</small>
       </a>
 
-      <a class="nav-item" href="exhibitors.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="exhibitors.html" data-action="toggle-menu">
         <span>EXHIBITORS</span>
         <small class="ja">出展企業</small>
       </a>
 
-      <a class="nav-item" href="registration.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="registration.html" data-action="toggle-menu">
         <span>REGISTRATION</span>
         <small class="ja">来場予約</small>
       </a>
 
-      <a class="nav-item" href="contact.html" onclick="toggleMenu()">
+      <a class="nav-item" data-action="close-menu" href="contact.html" data-action="toggle-menu">
         <span>CONTACT</span>
         <small class="ja">お問い合わせ</small>
       </a>
 
       <div class="lang-switch">
-        <button type="button" data-lang="ja" onclick="setLang('ja')">JP</button>
+        <button type="button" data-lang="ja" data-set-lang="ja">JP</button>
         <span>/</span>
-        <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
+        <button type="button" data-lang="en" data-set-lang="en">EN</button>
       </div>
     </nav>
   </div>
@@ -147,11 +147,6 @@
           1 minute from JR Harajuku Station<br>
           1 minute from Meiji-jingumae “Harajuku” Station
         </p>
-
-        <div class="map-embed">
-          <iframe title="WITH HARAJUKU HALL Google Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
-            src="https://www.google.com/maps?q=WITH%20HARAJUKU%20HALL&output=embed"></iframe>
-        </div>
         <a class="map-link" href="https://maps.google.com/?q=WITH+HARAJUKU+HALL" target="_blank" rel="noopener">GOOGLE MAP</a>
       </div>
     </div>
