@@ -27,6 +27,63 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+function setAdminTab(tabName, { scroll = false } = {}) {
+  const tabs = [...document.querySelectorAll('[data-admin-tab]')];
+  const panels = [...document.querySelectorAll('[data-admin-panel]')];
+  if (!tabs.length || !panels.length) return;
+
+  const requestedTab = tabs.find(tab => tab.dataset.adminTab === tabName && !tab.hidden);
+  const activeTab = requestedTab || tabs.find(tab => !tab.hidden) || tabs[0];
+  const activeName = activeTab?.dataset.adminTab;
+  if (!activeName) return;
+
+  tabs.forEach(tab => {
+    const selected = tab === activeTab;
+    tab.classList.toggle('active', selected);
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  });
+
+  panels.forEach(panel => {
+    panel.hidden = panel.dataset.adminPanel !== activeName;
+  });
+
+  if (scroll) {
+    const panel = panels.find(item => item.dataset.adminPanel === activeName);
+    panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function initAdminTabs() {
+  const tablist = document.querySelector('.admin-tabs');
+  if (!tablist || tablist.dataset.tabsReady === 'true') return;
+  tablist.dataset.tabsReady = 'true';
+  tablist.setAttribute('role', 'tablist');
+
+  tablist.querySelectorAll('[data-admin-tab]').forEach(tab => {
+    tab.setAttribute('role', 'tab');
+    tab.addEventListener('click', () => setAdminTab(tab.dataset.adminTab, { scroll: true }));
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      const visibleTabs = [...tablist.querySelectorAll('[data-admin-tab]')].filter(item => !item.hidden);
+      const index = visibleTabs.indexOf(tab);
+      if (index < 0 || !visibleTabs.length) return;
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const next = visibleTabs[(index + direction + visibleTabs.length) % visibleTabs.length];
+      next.focus();
+      setAdminTab(next.dataset.adminTab);
+    });
+  });
+
+  document.querySelectorAll('[data-admin-panel]').forEach(panel => {
+    panel.setAttribute('role', 'tabpanel');
+  });
+
+  setAdminTab('visitors');
+}
+
 async function waitForSession(timeoutMs = 5000) {
   const first = await supabase.auth.getSession();
   if (first.data.session) return first.data.session;
@@ -170,7 +227,14 @@ async function loadAdmin() {
 
   document.querySelector('[data-staff-name]').textContent =
     `${auth.profile.display_name} (${auth.profile.role})`;
-  document.querySelectorAll('[data-admin-only]').forEach(el=>{el.hidden=auth.profile.role!=='admin';});
+
+  const isAdmin = auth.profile.role === 'admin';
+  document.querySelectorAll('[data-admin-only]').forEach(el => {
+    // Do not force the CMS panel visible. Its visibility is controlled by the tabs.
+    if (el.matches('[data-admin-tab]')) el.hidden = !isAdmin;
+  });
+  initAdminTabs();
+  setAdminTab('visitors');
 
   const { data: registrations, error } = await supabase
     .from('registrations')
