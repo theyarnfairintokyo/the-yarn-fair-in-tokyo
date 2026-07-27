@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- THE YARN FAIR IN TOKYO™ FINAL DESIGN V2 / AW2026 --><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>REGISTRATION | THE YARN FAIR IN TOKYO™</title><link rel="stylesheet" href="/css/style.css"></head><body><header class="site-header">
+  <div class="nav">
+    <a class="brand-text" href="index.html" aria-label="THE YARN FAIR IN TOKYO home">
+      <span class="brand-name wordmark-font">THE YARN FAIR IN TOKYO™</span>
+      <span class="brand-tagline">Curated for Japan. Connected to the World.</span>
+    </a>
+
+    <button class="menu-button" type="button" aria-label="Menu" data-action="toggle-menu">☰</button>
+
+    <nav class="nav-links">
+      <a class="nav-item" data-action="close-menu" href="index.html#about" data-action="toggle-menu">
+        <span>ABOUT</span>
+        <small class="ja">展示会について</small>
+      </a>
+
+      <a class="nav-item" data-action="close-menu" href="index.html#details" data-action="toggle-menu">
+        <span>EVENT</span>
+        <small class="ja">開催概要</small>
+      </a>
+
+      <a class="nav-item" data-action="close-menu" href="exhibitors.html" data-action="toggle-menu">
+        <span>EXHIBITORS</span>
+        <small class="ja">出展企業</small>
+      </a>
+
+      <a class="nav-item" data-action="close-menu" href="registration.html" data-action="toggle-menu">
+        <span>REGISTRATION</span>
+        <small class="ja">来場予約</small>
+      </a>
+
+      <a class="nav-item" data-action="close-menu" href="contact.html" data-action="toggle-menu">
+        <span>CONTACT</span>
+        <small class="ja">お問い合わせ</small>
+      </a>
+
+      <div class="lang-switch">
+        <button type="button" data-lang="ja" data-set-lang="ja">JP</button>
+        <span>/</span>
+        <button type="button" data-lang="en" data-set-lang="en">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+<section class="section"><div class="kicker">VISITOR REGISTRATION</div><h1 class="ja">来場登録</h1><h1 class="en">Visitor Registration</h1>
+<form id="visitor-registration" class="form">
+<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+<div class="field-grid"><div class="field"><label class="ja">氏名</label><label class="en">Name</label><input name="full_name" required></div><div class="field"><label class="ja">氏名〈英字〉</label><label class="en">Name in Roman letters</label><input name="roman_name"></div></div>
+<div class="field-grid"><div class="field"><label class="ja">会社名</label><label class="en">Company</label><input name="company_name" required></div><div class="field"><label class="ja">会社名〈英字〉</label><label class="en">Company in English</label><input name="company_name_en"></div></div>
+<div class="field-grid"><div class="field"><label class="ja">部署</label><label class="en">Department</label><input name="department"></div><div class="field"><label class="ja">役職</label><label class="en">Position</label><input name="position_title"></div></div>
+<div class="field-grid"><div class="field"><label>Email</label><input type="email" name="email" required></div><div class="field"><label class="ja">電話番号</label><label class="en">Phone</label><input type="tel" name="phone" required></div></div>
+<div class="field-grid"><div class="field"><label class="ja">国・地域</label><label class="en">Country / Region</label><input name="country_region"></div><div class="field"><label class="ja">業種</label><label class="en">Industry</label><select name="industry" required><option value="">--</option><option>Apparel Brand</option><option>Trading Company</option><option>Knitter</option><option>OEM / ODM</option><option>Designer</option><option>Retail</option><option>Material Manufacturer</option><option>Media</option><option>School / Student</option><option>Other</option></select></div></div>
+<fieldset class="field"><legend class="ja">来場予定日〈複数選択可〉</legend><legend class="en">Planned visit dates</legend><label class="checkline"><input type="checkbox" name="planned_visit_dates" value="2026-10-20">2026.10.20</label><label class="checkline"><input type="checkbox" name="planned_visit_dates" value="2026-10-21">2026.10.21</label><label class="checkline"><input type="checkbox" name="planned_visit_dates" value="2026-10-22">2026.10.22</label></fieldset>
+<fieldset class="field"><legend class="ja">興味のある素材〈任意〉</legend><legend class="en">Materials of interest</legend><label class="checkline"><input type="checkbox" name="interest_materials" value="Cashmere">Cashmere</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Wool / Merino">Wool / Merino</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Cotton">Cotton</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Linen">Linen</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Alpaca">Alpaca</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Fancy Yarn">Fancy Yarn</label><label class="checkline"><input type="checkbox" name="interest_materials" value="Sustainable Materials">Sustainable Materials</label></fieldset>
+<div class="field"><label class="ja">主催者への連絡事項〈任意〉</label><label class="en">Message to the organizer</label><textarea name="organizer_message"></textarea></div>
+<label class="field checkline"><input type="checkbox" name="privacy_consent" required><span class="ja">個人情報の取扱いに同意します〈必須〉</span><span class="en">I agree to the handling of personal information</span></label>
+<label class="field checkline"><input type="checkbox" name="marketing_consent"><span class="ja">今後の展示会案内を受け取る〈任意〉</span><span class="en">Receive future exhibition information</span></label>
+<p data-registration-message class="status-message"></p><div class="form-actions"><button class="btn primary ja" type="submit">来場登録</button><button class="btn primary en" type="submit">REGISTER</button></div></form></section>
+<footer class="footer">
+  <strong class="wordmark-font">THE YARN FAIR IN TOKYO™</strong>
+  <p>Curated for Japan. Connected to the World.</p>
+  <p>Organized by ANDES JAPAN LLC<br>アンデスジャパン合同会社</p>
+  <p><a href="mailto:THEYARNFAIRINTOKYO@gmail.com">THEYARNFAIRINTOKYO@gmail.com</a></p>
+  <p>© 2026 ANDES JAPAN LLC. All Rights Reserved.</p>
+</footer><script src="/js/app.js"></script><script type="module" src="/src/registration.js"></script></body></html>
