@@ -23,27 +23,98 @@ function formatTokyo(value) {
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function waitForSession(timeoutMs = 5000) {
+  const first = await supabase.auth.getSession();
+  if (first.data.session) return first.data.session;
+
+  return await new Promise(resolve => {
+    let settled = false;
+    const finish = session => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      subscription?.unsubscribe();
+      resolve(session || null);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) finish(session);
+    });
+
+    const timer = setTimeout(() => finish(null), timeoutMs);
+  });
+}
+
 async function sessionAndProfile() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return null;
+  const session = await waitForSession();
+  if (!session) {
+    return { ok: false, reason: 'no_session', message: 'ログインセッションを確認できませんでした。' };
+  }
 
   const { data: profile, error } = await supabase
     .from('staff_profiles')
     .select('display_name,role,is_active')
     .eq('user_id', session.user.id)
-    .single();
+    .maybeSingle();
 
-  if (error || !profile?.is_active) return null;
-  return { session, profile };
+  if (error) {
+    console.error('staff_profiles lookup failed:', error);
+    return {
+      ok: false,
+      reason: 'profile_error',
+      session,
+      message: `管理者情報を読み込めませんでした: ${error.message}`,
+      error
+    };
+  }
+
+  if (!profile) {
+    return {
+      ok: false,
+      reason: 'profile_missing',
+      session,
+      message: 'このログインユーザーに管理者情報が登録されていません。'
+    };
+  }
+
+  if (!profile.is_active) {
+    return {
+      ok: false,
+      reason: 'profile_inactive',
+      session,
+      message: 'この管理者アカウントは無効になっています。'
+    };
+  }
+
+  return { ok: true, session, profile };
 }
 
 async function requireStaff() {
   const auth = await sessionAndProfile();
-  if (!auth) {
-    location.href = '/staff-login.html';
+  if (auth.ok) return auth;
+
+  if (auth.reason === 'no_session') {
+    location.replace('/staff-login.html');
     return null;
   }
-  return auth;
+
+  const mount = document.querySelector('[data-admin-dashboard], [data-checkin-result]');
+  if (mount) {
+    mount.innerHTML = `
+      <div class="phase-card">
+        <p class="status-error">${escapeHtml(auth.message)}</p>
+        <p>ログイン認証は成功していますが、管理者権限の確認で停止しました。</p>
+        <div class="phase-actions">
+          <button class="btn" type="button" onclick="location.reload()">再確認</button>
+          <button class="btn" type="button" onclick="staffLogout()">ログアウト</button>
+        </div>
+      </div>`;
+  }
+  return null;
 }
 
 document.querySelector('#staff-login')?.addEventListener('submit', async event => {
@@ -63,17 +134,20 @@ document.querySelector('#staff-login')?.addEventListener('submit', async event =
   if (message) message.textContent = '';
 
   try {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: emailInput.value.trim(),
       password: passwordInput.value
     });
 
-    if (error) {
-      if (message) message.textContent = 'メールアドレスまたはパスワードを確認してください。';
+    if (error || !data.session) {
+      console.error('Supabase sign-in failed:', error);
+      if (message) message.textContent = error?.message || 'メールアドレスまたはパスワードを確認してください。';
       return;
     }
 
-    location.assign('/admin.html');
+    // Give the browser a brief moment to persist the Supabase session before navigation.
+    await sleep(250);
+    location.replace('/admin.html');
   } catch (error) {
     console.error('Staff login failed:', error);
     if (message) message.textContent = 'ログイン処理中にエラーが発生しました。もう一度お試しください。';
