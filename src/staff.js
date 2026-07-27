@@ -49,22 +49,37 @@ async function requireStaff() {
 document.querySelector('#staff-login')?.addEventListener('submit', async event => {
   event.preventDefault();
   const form = event.currentTarget;
-  const message = document.querySelector('[data-login-message]');
-  const button = form.querySelector('button[type="submit"]');
-  button.disabled = true;
-  message.textContent = '';
+  const message = form.querySelector('[data-login-message]');
+  const button = form.querySelector('[data-login-button], button[type="submit"], button');
+  const emailInput = form.elements.namedItem('email');
+  const passwordInput = form.elements.namedItem('password');
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: form.email.value.trim(),
-    password: form.password.value
-  });
-
-  if (error) {
-    message.textContent = 'メールアドレスまたはパスワードを確認してください。';
-    button.disabled = false;
+  if (!(emailInput instanceof HTMLInputElement) || !(passwordInput instanceof HTMLInputElement)) {
+    if (message) message.textContent = 'ログインフォームを正しく読み込めませんでした。ページを再読み込みしてください。';
     return;
   }
-  location.href = '/admin.html';
+
+  if (button) button.disabled = true;
+  if (message) message.textContent = '';
+
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: emailInput.value.trim(),
+      password: passwordInput.value
+    });
+
+    if (error) {
+      if (message) message.textContent = 'メールアドレスまたはパスワードを確認してください。';
+      return;
+    }
+
+    location.assign('/admin.html');
+  } catch (error) {
+    console.error('Staff login failed:', error);
+    if (message) message.textContent = 'ログイン処理中にエラーが発生しました。もう一度お試しください。';
+  } finally {
+    if (button) button.disabled = false;
+  }
 });
 
 window.staffLogout = async () => {
