@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#4B1E3F">
+  <title>OPERATIONS SYSTEM — THE YARN FAIR IN TOKYO™</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+<body class="tyf-admin-body">
+  <div class="tyf-admin-app">
+    <aside class="tyf-sidebar">
+      <a class="tyf-sidebar-brand" href="/index.html" aria-label="THE YARN FAIR IN TOKYO home">
+        <span class="tyf-brand-ring" aria-hidden="true">◌</span>
+        <strong>THE YARN FAIR<br>IN TOKYO™</strong>
+        <small>OPERATIONS SYSTEM</small>
+      </a>
+
+      <nav class="tyf-sidebar-nav" aria-label="Administration">
+        <button class="tyf-nav-item active" type="button" data-dashboard-view="dashboard">
+          <span aria-hidden="true">⌂</span><span>DASHBOARD</span>
+        </button>
+        <button class="tyf-nav-item" type="button" data-dashboard-view="visitors">
+          <span aria-hidden="true">◎</span><span>VISITORS</span>
+        </button>
+        <a class="tyf-nav-item" href="/checkin.html">
+          <span aria-hidden="true">⌗</span><span>QR CHECK-IN</span>
+        </a>
+        <button class="tyf-nav-item" type="button" data-dashboard-view="exhibitors" data-admin-only>
+          <span aria-hidden="true">◇</span><span>EXHIBITOR CMS</span>
+        </button>
+        <button class="tyf-nav-item" type="button" data-action="export-csv">
+          <span aria-hidden="true">↓</span><span>CSV EXPORT</span>
+        </button>
+        <button class="tyf-nav-item" type="button" data-action="export-excel">
+          <span aria-hidden="true">⇩</span><span>EXCEL EXPORT</span>
+        </button>
+      </nav>
+
+      <div class="tyf-sidebar-footer">
+        <div>2026.10.20–22</div>
+        <div>WITH HARAJUKU HALL</div>
+      </div>
+    </aside>
+
+    <main class="tyf-main">
+      <header class="tyf-topbar">
+        <div>
+          <div class="tyf-eyebrow">ORIGINAL OPERATIONS SYSTEM</div>
+          <h1 data-page-title>Dashboard</h1>
+          <p data-page-subtitle>Visitor registration and live check-in management</p>
+        </div>
+        <div class="tyf-topbar-actions">
+          <div class="tyf-user">
+            <span data-staff-name>Loading…</span>
+          </div>
+          <span class="tyf-live"><i></i>LIVE</span>
+          <button class="tyf-icon-button" type="button" data-action="refresh-dashboard" aria-label="Refresh dashboard">↻</button>
+          <button class="tyf-logout" type="button" data-action="staff-logout">LOGOUT</button>
+        </div>
+      </header>
+
+      <section class="tyf-view active" data-view-panel="dashboard">
+        <section class="tyf-hero">
+          <div>
+            <span>TODAY'S VISITORS</span>
+            <strong data-today-checkins>—</strong>
+            <small data-last-hour>Loading live attendance…</small>
+          </div>
+          <div class="tyf-event">
+            <b>OCTOBER 20–22, 2026</b>
+            <span>WITH HARAJUKU HALL</span>
+            <span data-current-time>—</span>
+          </div>
+        </section>
+
+        <section class="tyf-metrics">
+          <article class="tyf-card tyf-metric">
+            <span>REGISTERED</span><strong data-total-registrations>—</strong><small>Total pre-registration</small>
+          </article>
+          <article class="tyf-card tyf-metric">
+            <span>CHECKED-IN</span><strong data-total-checkins>—</strong><small data-attendance-rate>Attendance rate</small>
+          </article>
+          <article class="tyf-card tyf-metric">
+            <span>PENDING</span><strong data-total-unchecked>—</strong><small>Not checked in</small>
+          </article>
+          <article class="tyf-card tyf-metric">
+            <span>INDUSTRIES</span><strong data-industry-count>—</strong><small>Visitor business categories</small>
+          </article>
+        </section>
+
+        <section class="tyf-dashboard-grid">
+          <article class="tyf-card tyf-span-2">
+            <div class="tyf-card-head">
+              <div><span>REGISTRATION TREND</span><h2>Planned visit dates</h2></div>
+              <small>Based on current registrations</small>
+            </div>
+            <div class="tyf-bars" data-registration-trend>
+              <p class="tyf-loading">Loading…</p>
+            </div>
+          </article>
+
+          <article class="tyf-card">
+            <div class="tyf-card-head">
+              <div><span>LIVE CHECK-IN</span><h2>Latest arrivals</h2></div>
+              <small>Tokyo time</small>
+            </div>
+            <div class="tyf-live-list" data-live-checkins>
+              <p class="tyf-loading">Loading…</p>
+            </div>
+          </article>
+
+          <article class="tyf-card">
+            <div class="tyf-card-head">
+              <div><span>VISITOR MIX</span><h2>Industries</h2></div>
+              <small>Top categories</small>
+            </div>
+            <div class="tyf-ranking" data-industry-ranking>
+              <p class="tyf-loading">Loading…</p>
+            </div>
+          </article>
+
+          <article class="tyf-card tyf-span-2">
+            <div class="tyf-card-head">
+              <div><span>QUICK ACTIONS</span><h2>Operations</h2></div>
+            </div>
+            <div class="tyf-quick-actions">
+              <a href="/checkin.html"><b>⌗</b><span>SCAN QR</span></a>
+              <button type="button" data-dashboard-view="visitors"><b>◎</b><span>VISITORS</span></button>
+              <button type="button" data-action="export-excel"><b>⇩</b><span>EXCEL</span></button>
+              <button type="button" data-dashboard-view="exhibitors" data-admin-only><b>◇</b><span>EXHIBITOR CMS</span></button>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section class="tyf-view" data-view-panel="visitors" hidden>
+        <div class="tyf-toolbar">
+          <label class="tyf-search">
+            <span aria-hidden="true">⌕</span>
+            <input type="search" data-visitor-search placeholder="Name, company, email or registration number">
+          </label>
+          <select data-visitor-status aria-label="Check-in status">
+            <option value="all">All status</option>
+            <option value="checked">Checked-in</option>
+            <option value="pending">Pending</option>
+          </select>
+          <select data-visitor-date aria-label="Planned visit date">
+            <option value="all">All visit dates</option>
+            <option value="2026-10-20">Oct 20</option>
+            <option value="2026-10-21">Oct 21</option>
+            <option value="2026-10-22">Oct 22</option>
+          </select>
+          <span class="tyf-result-count" data-result-count>—</span>
+        </div>
+
+        <div class="tyf-card tyf-table-card">
+          <div class="tyf-table-wrap">
+            <table class="tyf-table">
+              <thead>
+                <tr>
+                  <th>REGISTRATION</th>
+                  <th>COMPANY</th>
+                  <th>NAME</th>
+                  <th>EMAIL</th>
+                  <th>INDUSTRY</th>
+                  <th>PLANNED DATES</th>
+                  <th>CHECK-IN</th>
+                </tr>
+              </thead>
+              <tbody data-visitor-rows>
+                <tr><td colspan="7" class="tyf-empty">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="tyf-view" data-view-panel="exhibitors" hidden data-admin-only>
+        <div class="tyf-card tyf-cms-card">
+          <div class="tyf-card-head">
+            <div><span>EXHIBITOR MANAGEMENT</span><h2>Exhibitor CMS</h2></div>
+          </div>
+          <div data-exhibitor-cms></div>
+        </div>
+      </section>
+
+      <div class="tyf-toast" data-dashboard-toast role="status" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script type="module" src="/src/admin-dashboard.js"></script>
+  <script type="module" src="/src/cms.js"></script>
+</body>
+</html>
