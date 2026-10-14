@@ -7,4 +7,5 @@ registration:resolve(__dirname,'registration.html'),
 registrationComplete:resolve(__dirname,'registration-complete.html'),
 staffLogin:resolve(__dirname,'staff-login.html'),admin:resolve(__dirname,'admin.html'),
 checkin:resolve(__dirname,'checkin.html'),
+checkinSelf:resolve(__dirname,'checkin-self.html'),
 checkinSelfTest:resolve(__dirname,'checkin-self-test.html')}}}});

@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>THE YARN FAIR IN TOKYO | Self Check-in</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #101820;
+      color: #fff;
+      font-family: Arial, "Noto Sans JP", sans-serif;
+      text-align: center;
+    }
+
+    header { padding: 20px 12px 8px; }
+
+    h1 {
+      font-size: clamp(20px, 4vw, 30px);
+      margin: 8px;
+    }
+
+    .subtitle {
+      letter-spacing: 3px;
+      color: #ddd;
+    }
+
+    #qr-reader {
+      width: min(96vw, 550px);
+      margin: 12px auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    /*
+      Only the visible video is transformed.
+      The QR decoding source is left unchanged.
+    */
+    #qr-reader video {
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    #qr-reader.mirror video {
+      transform: scaleX(-1) !important;
+      -webkit-transform: scaleX(-1) !important;
+    }
+
+    #status {
+      white-space: pre-line;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: bold;
+      line-height: 1.5;
+      padding: 20px 12px;
+      min-height: 130px;
+    }
+
+    .success { color: #4be69c; }
+    .error { color: #ff9999; }
+    .info { color: #fff; }
+
+    button {
+      padding: 16px 28px;
+      margin: 8px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      background: #fff;
+      color: #101820;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: 0.4; }
+
+    #mirror-toggle {
+      display: none;
+      font-size: 15px;
+      background: #263747;
+      color: #fff;
+      border: 1px solid #72808d;
+    }
+
+    [hidden] { display: none !important; }
+    #pair-form { max-width: 500px; padding: 20px; margin: auto; }
+    #pair-form label { display: block; margin-top: 12px; }
+    #pair-form input, #pair-form select { width: 100%; font-size: 20px; padding: 12px; margin-top: 6px; }
+    .note {
+      color: #ccc;
+      font-size: 14px;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>THE YARN FAIR IN TOKYO™</h1>
+    <div class="subtitle">SELF CHECK-IN</div>
+  </header>
+
+  <p class="note">2026年10月20–22日 · WITH HARAJUKU HALL</p>
+  <form id="pair-form" hidden autocomplete="off">
+    <p>主催者用：初回の端末設定</p>
+    <label for="device">受付端末</label>
+    <select id="device" required><option value="redmi-1">Redmi Pad 1</option><option value="redmi-2">Redmi Pad 2</option></select>
+    <label for="device-key">端末設定キー</label>
+    <input id="device-key" type="password" required autocomplete="off" spellcheck="false" maxlength="256">
+    <button id="pair-button" type="submit">この端末を設定</button>
+  </form>
+  <div id="qr-reader"></div>
+
+  <div id="status" role="status" aria-live="polite">
+    端末を確認しています…
+  </div>
+
+  <button id="start" type="button" hidden>
+    カメラを開始
+  </button>
+
+  <button id="mirror-toggle" type="button">
+    映像の左右を切り替える
+  </button>
+
+  <p class="note">
+    Please hold your QR code in front of the camera.
+  </p>
+
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <script type="module" src="/src/self-checkin.js"></script>
+</body>
+</html>

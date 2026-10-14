@@ -32,3 +32,8 @@
   for = "/staff-login.html"
   [headers.values]
     Cache-Control = "no-store"
+
+[[headers]]
+  for = "/checkin-self.html"
+  [headers.values]
+    Cache-Control = "no-store"
