@@ -76,14 +76,6 @@
 
     button:disabled { opacity: 0.4; }
 
-    #mirror-toggle {
-      display: none;
-      font-size: 15px;
-      background: #263747;
-      color: #fff;
-      border: 1px solid #72808d;
-    }
-
     [hidden] { display: none !important; }
     #pair-form { max-width: 500px; padding: 20px; margin: auto; }
     #pair-form label { display: block; margin-top: 12px; }
@@ -121,12 +113,8 @@
     カメラを開始
   </button>
 
-  <button id="mirror-toggle" type="button">
-    映像の左右を切り替える
-  </button>
-
   <p class="note">
-    Please hold your QR code in front of the camera.
+    QR全体と周囲の白い余白が映るように、カメラから少し離してかざしてください。
   </p>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>

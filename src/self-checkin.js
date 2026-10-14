@@ -1,7 +1,6 @@
 const readerEl = document.getElementById('qr-reader');
 const statusEl = document.getElementById('status');
 const startButton = document.getElementById('start');
-const mirrorButton = document.getElementById('mirror-toggle');
 const pairForm = document.getElementById('pair-form');
 const pairButton = document.getElementById('pair-button');
 const keyInput = document.getElementById('device-key');
@@ -33,11 +32,6 @@ function show(message, type = 'info') {
 }
 function applyMirror() { readerEl.classList.toggle('mirror', mirror); }
 applyMirror();
-mirrorButton.addEventListener('click', () => {
-  mirror = !mirror;
-  try { localStorage.setItem('selfCheckinMirror', String(mirror)); } catch { /* optional preference */ }
-  applyMirror();
-});
 async function api(input) {
   const response = await fetch('/api/checkin-self', {
     method: input ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
@@ -95,6 +89,7 @@ async function onScan(decodedText) {
     show('受付処理中です…');
     // Before the event, testing the camera must not create attendance records.
     if (!eventOpen) {
+      show('QR読み取りを確認しました');
       const state = await api();
       eventOpen = state.eventOpen === true;
       if (!eventOpen) { show('QR読み取りを確認しました\n会期前のため受付は記録されません'); return; }
@@ -108,7 +103,6 @@ async function onScan(decodedText) {
         running = false;
         await scanner.stop();
         pairForm.hidden = false;
-        mirrorButton.style.display = 'none';
       }
     }
   } catch {
@@ -137,15 +131,20 @@ async function startCamera() {
   show('カメラを起動しています…');
   try {
     if (typeof Html5Qrcode === 'undefined') throw new Error('QR library unavailable');
-    scanner ??= new Html5Qrcode('qr-reader');
-    const boxSize = Math.min(350, Math.floor(readerEl.clientWidth * 0.75));
+    // Use the software decoder consistently on Android, including flipped QR images.
+    scanner ??= new Html5Qrcode('qr-reader', {
+      useBarCodeDetectorIfSupported: false,
+      formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+      verbose: false
+    });
     await scanner.start({ facingMode: 'user' }, {
-      fps: 10, qrbox: { width: boxSize, height: boxSize }, aspectRatio: 1, disableFlip: false
+      // Scan the entire frame so the displayed QR cannot fall outside a cropped box.
+      fps: 10, disableFlip: false,
+      videoConstraints: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
     }, onScan, () => {});
     running = true;
     applyMirror();
     startButton.hidden = true;
-    mirrorButton.style.display = 'inline-block';
     await holdScreenAwake();
     show('QRコードをかざしてください');
   } catch {

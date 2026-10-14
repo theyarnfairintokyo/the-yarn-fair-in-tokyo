@@ -20,7 +20,7 @@ async function fixture({ eventOpen = true, result = { status: 'success', company
   }
   const context = vm.createContext({
     document: { getElementById: id => elements.get(id), addEventListener() {}, visibilityState: 'visible' },
-    localStorage: { getItem: () => null, setItem() {} }, navigator: {}, Html5Qrcode: Scanner,
+    localStorage: { getItem: () => null, setItem() {} }, navigator: {}, Html5Qrcode: Scanner, Html5QrcodeSupportedFormats: { QR_CODE: 0 },
     AbortSignal, Date, setTimeout: (fn, ms) => { timers.push({ fn, ms }); },
     fetch: async (_url, args) => {
       if (args.method === 'GET') return { json: async () => ({ authorized: true, eventOpen }) };
