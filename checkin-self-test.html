@@ -10,15 +10,15 @@
     body {
       margin: 0;
       background: #101820;
-      color: #fff;
+      color: white;
       font-family: Arial, "Noto Sans JP", sans-serif;
       text-align: center;
     }
     header { padding: 20px 12px 8px; }
-    h1 { font-size: clamp(20px, 4vw, 30px); margin: 8px; }
+    h1 { font-size: clamp(20px, 4vw, 30px); }
     .subtitle { letter-spacing: 3px; color: #ddd; }
     #qr-reader {
-      width: min(94vw, 550px);
+      width: min(96vw, 550px);
       margin: 12px auto;
       overflow: hidden;
       border-radius: 12px;
@@ -33,19 +33,19 @@
     }
     .success { color: #4be69c; }
     .error { color: #ff9999; }
-    .info { color: #fff; }
+    .info { color: white; }
     button {
       padding: 16px 32px;
       margin: 10px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
-      background: #fff;
+      background: white;
       color: #101820;
       font-weight: bold;
     }
     button:disabled { opacity: 0.4; }
-    .note { color: #ccc; font-size: 14px; padding: 10px; }
+    .note { color: #ccc; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -56,16 +56,19 @@
 
   <div id="qr-reader"></div>
   <div id="status" role="status" aria-live="polite">
-    受付システムを準備しています
+    カメラを開始してください
   </div>
-  <button id="start" type="button" disabled>
+
+  <button id="start" type="button">
     カメラを開始
   </button>
+
   <p class="note">
     Please hold your QR code in front of the camera.
   </p>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
   <script type="module">
     import { supabase } from './src/supabase.js';
 
@@ -75,7 +78,6 @@
     let scanner = null;
     let processing = false;
     let running = false;
-    let authorized = false;
 
     function show(message, type = 'info') {
       statusEl.textContent = message;
@@ -84,45 +86,12 @@
 
     function parseToken(rawValue) {
       const raw = String(rawValue || '').trim();
-
       try {
         const url = new URL(raw);
         return url.searchParams.get('token') || '';
       } catch {
         return raw;
       }
-    }
-
-    async function verifyStaff() {
-      const { data: { session }, error } =
-        await supabase.auth.getSession();
-
-      if (error || !session) {
-        show(
-          '受付スタッフのログインが必要です\n管理者にお問い合わせください',
-          'error'
-        );
-        return false;
-      }
-
-      const { data: profile, error: profileError } =
-        await supabase
-          .from('staff_profiles')
-          .select('role,is_active')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-      if (
-        profileError ||
-        !profile ||
-        !profile.is_active ||
-        !['reception_staff', 'admin'].includes(profile.role)
-      ) {
-        show('受付権限を確認できません', 'error');
-        return false;
-      }
-
-      return true;
     }
 
     async function recordVisitor(rawValue) {
@@ -142,7 +111,10 @@
 
       if (error || !data?.length) {
         console.error('QR lookup:', error);
-        show('QRコードを確認できません\n受付スタッフへお声がけください', 'error');
+        show(
+          'QRコードを確認できません\n受付スタッフへお声がけください',
+          'error'
+        );
         return;
       }
 
@@ -169,7 +141,6 @@
 
       if (result.error) {
         console.error('Check-in:', result.error);
-
         if (result.error.message.includes('ALREADY_CHECKED_IN')) {
           show('すでに受付済みです', 'error');
         } else {
@@ -193,10 +164,9 @@
 
       try {
         scanner.pause(true);
-
         await recordVisitor(decodedText);
       } catch (error) {
-        console.error('Unexpected error:', error);
+        console.error('Scan error:', error);
         show('通信エラーが発生しました', 'error');
       } finally {
         setTimeout(() => {
@@ -206,7 +176,7 @@
               show('QRコードをかざしてください');
             }
           } catch (error) {
-            console.error('Scanner resume:', error);
+            console.error('Resume error:', error);
             running = false;
             startButton.disabled = false;
             show('カメラを再度開始してください', 'error');
@@ -223,14 +193,6 @@
       show('カメラを起動しています...');
 
       try {
-        if (!authorized) {
-          authorized = await verifyStaff();
-          if (!authorized) {
-            startButton.disabled = false;
-            return;
-          }
-        }
-
         if (typeof Html5Qrcode === 'undefined') {
           throw new Error('QR reader library unavailable');
         }
@@ -239,11 +201,19 @@
           scanner = new Html5Qrcode('qr-reader');
         }
 
+        const boxSize = Math.min(
+          350,
+          Math.floor(window.innerWidth * 0.75)
+        );
+
         await scanner.start(
           { facingMode: 'user' },
           {
             fps: 10,
-            qrbox: { width: 280, height: 280 },
+            qrbox: {
+              width: boxSize,
+              height: boxSize
+            },
             aspectRatio: 1
           },
           onScan,
@@ -251,7 +221,9 @@
         );
 
         running = true;
+        startButton.style.display = 'none';
         show('QRコードをかざしてください');
+
       } catch (error) {
         console.error('Camera error:', error);
         running = false;
@@ -264,17 +236,6 @@
     }
 
     startButton.addEventListener('click', startCamera);
-
-    async function initialize() {
-      authorized = await verifyStaff();
-
-      if (authorized) {
-        show('カメラを開始してください');
-        startButton.disabled = false;
-      }
-    }
-
-    initialize();
   </script>
 </body>
 </html>
