@@ -11,14 +11,17 @@
     body {
       margin: 0;
       background: #101820;
-      color: white;
+      color: #fff;
       font-family: Arial, "Noto Sans JP", sans-serif;
       text-align: center;
     }
 
     header { padding: 20px 12px 8px; }
 
-    h1 { font-size: clamp(20px, 4vw, 30px); }
+    h1 {
+      font-size: clamp(20px, 4vw, 30px);
+      margin: 8px;
+    }
 
     .subtitle {
       letter-spacing: 3px;
@@ -32,9 +35,18 @@
       border-radius: 12px;
     }
 
-    /* Front camera: correct mirror display */
+    /*
+      Only the visible video is transformed.
+      The QR decoding source is left unchanged.
+    */
     #qr-reader video {
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    #qr-reader.mirror video {
       transform: scaleX(-1) !important;
+      -webkit-transform: scaleX(-1) !important;
     }
 
     #status {
@@ -48,24 +60,34 @@
 
     .success { color: #4be69c; }
     .error { color: #ff9999; }
-    .info { color: white; }
+    .info { color: #fff; }
 
     button {
-      padding: 16px 32px;
-      margin: 10px;
+      padding: 16px 28px;
+      margin: 8px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
-      background: white;
+      background: #fff;
       color: #101820;
       font-weight: bold;
+      cursor: pointer;
     }
 
     button:disabled { opacity: 0.4; }
 
+    #mirror-toggle {
+      display: none;
+      font-size: 15px;
+      background: #263747;
+      color: #fff;
+      border: 1px solid #72808d;
+    }
+
     .note {
       color: #ccc;
       font-size: 14px;
+      padding: 10px;
     }
   </style>
 </head>
@@ -86,6 +108,10 @@
     カメラを開始
   </button>
 
+  <button id="mirror-toggle" type="button">
+    映像の左右を切り替える
+  </button>
+
   <p class="note">
     Please hold your QR code in front of the camera.
   </p>
@@ -95,12 +121,29 @@
   <script type="module">
     import { supabase } from './src/supabase.js';
 
+    const readerEl = document.getElementById('qr-reader');
     const statusEl = document.getElementById('status');
     const startButton = document.getElementById('start');
+    const mirrorButton = document.getElementById('mirror-toggle');
 
     let scanner = null;
-    let processing = false;
     let running = false;
+    let processing = false;
+
+    // Stored only for display preference.
+    let mirror = localStorage.getItem('selfCheckinMirror') === 'true';
+
+    function applyMirror() {
+      readerEl.classList.toggle('mirror', mirror);
+    }
+
+    applyMirror();
+
+    mirrorButton.addEventListener('click', () => {
+      mirror = !mirror;
+      localStorage.setItem('selfCheckinMirror', String(mirror));
+      applyMirror();
+    });
 
     function show(message, type = 'info') {
       statusEl.textContent = message;
@@ -145,10 +188,7 @@
       const person = data[0];
 
       if (person.registration_status !== 'active') {
-        show(
-          'この登録は現在有効ではありません',
-          'error'
-        );
+        show('この登録は現在有効ではありません', 'error');
         return;
       }
 
@@ -194,11 +234,9 @@
       try {
         scanner.pause(true);
         await recordVisitor(decodedText);
-
       } catch (error) {
         console.error('Scan error:', error);
         show('通信エラーが発生しました', 'error');
-
       } finally {
         setTimeout(() => {
           try {
@@ -213,7 +251,6 @@
             startButton.style.display = 'inline-block';
             show('カメラを再度開始してください', 'error');
           }
-
           processing = false;
         }, 3000);
       }
@@ -227,7 +264,7 @@
 
       try {
         if (typeof Html5Qrcode === 'undefined') {
-          throw new Error('QR reader library unavailable');
+          throw new Error('QR library unavailable');
         }
 
         if (!scanner) {
@@ -236,7 +273,7 @@
 
         const boxSize = Math.min(
           350,
-          Math.floor(window.innerWidth * 0.75)
+          Math.floor(readerEl.clientWidth * 0.75)
         );
 
         await scanner.start(
@@ -247,20 +284,26 @@
               width: boxSize,
               height: boxSize
             },
-            aspectRatio: 1
+            aspectRatio: 1,
+            disableFlip: false
           },
           onScan,
           () => {}
         );
 
         running = true;
+        applyMirror();
+
         startButton.style.display = 'none';
+        mirrorButton.style.display = 'inline-block';
+
         show('QRコードをかざしてください');
 
       } catch (error) {
         console.error('Camera error:', error);
         running = false;
         startButton.disabled = false;
+        startButton.style.display = 'inline-block';
 
         show(
           'カメラを起動できません\nカメラの使用を許可してください',
