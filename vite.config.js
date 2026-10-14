@@ -6,4 +6,5 @@ company:resolve(__dirname,'company.html'),contact:resolve(__dirname,'contact.htm
 registration:resolve(__dirname,'registration.html'),
 registrationComplete:resolve(__dirname,'registration-complete.html'),
 staffLogin:resolve(__dirname,'staff-login.html'),admin:resolve(__dirname,'admin.html'),
-checkin:resolve(__dirname,'checkin.html')}}}});
+checkin:resolve(__dirname,'checkin.html'),
+checkinSelfTest:resolve(__dirname,'checkin-self-test.html')}}}});
