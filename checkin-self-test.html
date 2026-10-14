@@ -7,6 +7,7 @@
   <title>THE YARN FAIR IN TOKYO | Self Check-in</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       background: #101820;
@@ -14,15 +15,28 @@
       font-family: Arial, "Noto Sans JP", sans-serif;
       text-align: center;
     }
+
     header { padding: 20px 12px 8px; }
+
     h1 { font-size: clamp(20px, 4vw, 30px); }
-    .subtitle { letter-spacing: 3px; color: #ddd; }
+
+    .subtitle {
+      letter-spacing: 3px;
+      color: #ddd;
+    }
+
     #qr-reader {
       width: min(96vw, 550px);
       margin: 12px auto;
       overflow: hidden;
       border-radius: 12px;
     }
+
+    /* Front camera: correct mirror display */
+    #qr-reader video {
+      transform: scaleX(-1) !important;
+    }
+
     #status {
       white-space: pre-line;
       font-size: clamp(24px, 4vw, 36px);
@@ -31,9 +45,11 @@
       padding: 20px 12px;
       min-height: 130px;
     }
+
     .success { color: #4be69c; }
     .error { color: #ff9999; }
     .info { color: white; }
+
     button {
       padding: 16px 32px;
       margin: 10px;
@@ -44,10 +60,16 @@
       color: #101820;
       font-weight: bold;
     }
+
     button:disabled { opacity: 0.4; }
-    .note { color: #ccc; font-size: 14px; }
+
+    .note {
+      color: #ccc;
+      font-size: 14px;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>THE YARN FAIR IN TOKYO™</h1>
@@ -55,6 +77,7 @@
   </header>
 
   <div id="qr-reader"></div>
+
   <div id="status" role="status" aria-live="polite">
     カメラを開始してください
   </div>
@@ -86,6 +109,7 @@
 
     function parseToken(rawValue) {
       const raw = String(rawValue || '').trim();
+
       try {
         const url = new URL(raw);
         return url.searchParams.get('token') || '';
@@ -121,7 +145,10 @@
       const person = data[0];
 
       if (person.registration_status !== 'active') {
-        show('この登録は現在有効ではありません', 'error');
+        show(
+          'この登録は現在有効ではありません',
+          'error'
+        );
         return;
       }
 
@@ -141,6 +168,7 @@
 
       if (result.error) {
         console.error('Check-in:', result.error);
+
         if (result.error.message.includes('ALREADY_CHECKED_IN')) {
           show('すでに受付済みです', 'error');
         } else {
@@ -160,14 +188,17 @@
 
     async function onScan(decodedText) {
       if (processing || !running) return;
+
       processing = true;
 
       try {
         scanner.pause(true);
         await recordVisitor(decodedText);
+
       } catch (error) {
         console.error('Scan error:', error);
         show('通信エラーが発生しました', 'error');
+
       } finally {
         setTimeout(() => {
           try {
@@ -179,8 +210,10 @@
             console.error('Resume error:', error);
             running = false;
             startButton.disabled = false;
+            startButton.style.display = 'inline-block';
             show('カメラを再度開始してください', 'error');
           }
+
           processing = false;
         }, 3000);
       }
@@ -228,6 +261,7 @@
         console.error('Camera error:', error);
         running = false;
         startButton.disabled = false;
+
         show(
           'カメラを起動できません\nカメラの使用を許可してください',
           'error'
