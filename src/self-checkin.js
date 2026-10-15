@@ -12,7 +12,7 @@ let eventOpen = false;
 let wakeLock = null;
 let lastQr = '';
 let lastQrAt = 0;
-let mirror = false;
+let mirror = true;
 try { localStorage.removeItem('selfCheckinMirror'); } catch { /* optional preference */ }
 const messages = {
   DEVICE_NOT_AUTHORIZED: '端末設定が必要です\n主催者にお声がけください',
