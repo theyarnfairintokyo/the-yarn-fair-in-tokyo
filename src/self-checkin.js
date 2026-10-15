@@ -140,10 +140,10 @@ async function startCamera() {
       formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
       verbose: false
     });
-    await scanner.start({ facingMode: 'environment' }, {
+    await scanner.start({ facingMode: 'user' }, {
       // Scan the entire frame so the displayed QR cannot fall outside a cropped box.
       fps: 10, disableFlip: false,
-      videoConstraints: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+      videoConstraints: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
     }, onScan, () => {});
     running = true;
     applyMirror();
