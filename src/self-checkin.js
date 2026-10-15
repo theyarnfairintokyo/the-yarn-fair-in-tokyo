@@ -13,7 +13,7 @@ let wakeLock = null;
 let lastQr = '';
 let lastQrAt = 0;
 let mirror = false;
-try { mirror = localStorage.getItem('selfCheckinMirror') === 'true'; } catch { /* optional preference */ }
+try { localStorage.removeItem('selfCheckinMirror'); } catch { /* optional preference */ }
 const messages = {
   DEVICE_NOT_AUTHORIZED: '端末設定が必要です\n主催者にお声がけください',
   EVENT_CLOSED: '現在は受付時間外です\n受付日は10月20〜22日です',
@@ -80,7 +80,10 @@ pairForm.addEventListener('submit', async event => {
 });
 async function onScan(decodedText) {
   if (processing || !running) return;
-  if (decodedText === lastQr && Date.now() - lastQrAt < 6000) return;
+  if (decodedText === lastQr && Date.now() - lastQrAt < 1000) {
+    show('QRコードを読み取り中です…');
+    return;
+  }
   processing = true;
   lastQr = decodedText;
   lastQrAt = Date.now();
@@ -137,10 +140,10 @@ async function startCamera() {
       formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
       verbose: false
     });
-    await scanner.start({ facingMode: 'user' }, {
+    await scanner.start({ facingMode: 'environment' }, {
       // Scan the entire frame so the displayed QR cannot fall outside a cropped box.
       fps: 10, disableFlip: false,
-      videoConstraints: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
+      videoConstraints: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
     }, onScan, () => {});
     running = true;
     applyMirror();
