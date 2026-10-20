@@ -94,7 +94,13 @@ export function createHandler({ env = process.env, client = adminClient, clock =
         p_actor_user_id: actorUserId, p_event_code: eventCode
       });
       if (error) {
-        console.error('Self check-in RPC error:', error.code);
+        // Log only the database error category and safe metadata, never QR tokens or visitor data.
+        console.error('Self check-in RPC error:', JSON.stringify({
+          code: typeof error.code === 'string' ? error.code : 'unknown',
+          message: typeof error.message === 'string' ? error.message.slice(0, 300) : 'unknown',
+          hint: typeof error.hint === 'string' ? error.hint.slice(0, 200) : null,
+          details: typeof error.details === 'string' ? error.details.slice(0, 200) : null
+        }));
         return json({ error: 'CHECKIN_FAILED' }, 500);
       }
       const result = Array.isArray(data) ? data[0] : data;
