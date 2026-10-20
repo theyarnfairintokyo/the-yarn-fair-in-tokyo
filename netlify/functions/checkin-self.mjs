@@ -33,7 +33,9 @@ export function extractToken(value, origin) {
   if (UUID.test(raw)) return raw.toLowerCase();
   try {
     const url = new URL(raw);
-    if (url.origin !== origin || url.pathname !== '/checkin.html') return null;
+    // Accept QR links issued by the public registration site even when the kiosk runs on Netlify.
+    const allowedQrOrigins = new Set([origin, 'https://the-yarn-fair-in-tokyo.com']);
+    if (!allowedQrOrigins.has(url.origin) || url.pathname !== '/checkin.html') return null;
     const tokens = url.searchParams.getAll('token');
     if (tokens.length !== 1 || !UUID.test(tokens[0])) return null;
     return tokens[0].toLowerCase();
