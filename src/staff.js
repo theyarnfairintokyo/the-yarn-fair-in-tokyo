@@ -159,6 +159,8 @@ async function requireStaff() {
     return null;
   }
 
+  const protectedAdmin = document.querySelector('[data-protected-admin]');
+  if (protectedAdmin) protectedAdmin.hidden = false;
   const mount = document.querySelector('[data-admin-dashboard], [data-checkin-result]');
   if (mount) {
     mount.innerHTML = `
@@ -224,6 +226,8 @@ async function loadAdmin() {
 
   const auth = await requireStaff();
   if (!auth) return;
+  const protectedAdmin = document.querySelector('[data-protected-admin]');
+  if (protectedAdmin) protectedAdmin.hidden = false;
 
   document.querySelector('[data-staff-name]').textContent =
     `${auth.profile.display_name} (${auth.profile.role})`;
