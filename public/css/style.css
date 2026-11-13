@@ -1,10 +1,10 @@
 
 :root{
-  --plum:#4B1E3F;
-  --plum-soft:#F6F0F5;
+  --plum:#3A4A5A;
+  --plum-soft:#F3F5F7;
   --white:#FFFFFF;
-  --line:#DED2DC;
-  --muted:#786B76;
+  --line:#D5DEE5;
+  --muted:#657481;
   --max:1220px;
 }
 
@@ -553,3 +553,6 @@ html[lang="en"] .nav-item small{
 .cms-sticky-actions .status-message{margin:0;flex:1}.cms-sticky-actions .phase-actions{justify-content:flex-end}
 @media(max-width:900px){.cms-toolbar{align-items:stretch;flex-direction:column}.cms-controls{justify-content:stretch}.cms-search{max-width:none}.cms-company-row{grid-template-columns:42px 1fr}.cms-row-actions{grid-column:1/-1;justify-content:flex-start;padding-left:60px}}
 @media(max-width:600px){.cms-company-row{grid-template-columns:1fr}.cms-order{display:none}.cms-row-actions{grid-column:auto;padding-left:0}.cms-row-actions .btn{flex:1;text-align:center}.cms-editor-head{flex-direction:column}.cms-sticky-actions{position:static;flex-direction:column;align-items:stretch;margin:20px 0 0;padding:16px 0 0;background:#fff}.cms-sticky-actions .phase-actions{display:grid;grid-template-columns:1fr 1fr}.cms-controls>*{width:100%!important;max-width:none!important}}
+
+/* March 2027 Tokyo/Seoul campaign: match the navy-blue-grey used on the organizer's business card. */
+.hero-icon{filter: grayscale(1) sepia(.18) saturate(1.1) hue-rotate(175deg);}
