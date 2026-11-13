@@ -605,3 +605,11 @@ html[lang="en"] .nav-item small{
  .site-header .brand-wordmark-image{width:105px}
  .site-header .brand-edition{font-size:13px}
 }
+
+
+/* Final March 2027 horizontal identity: approved artwork keeps IN TOKYO adjacent. */
+.site-header .header-horizontal-logo{display:block;width:min(390px,34vw);height:auto;max-width:100%}
+.hero .hero-horizontal-logo{display:block;width:min(1120px,88vw);height:auto;margin:0 auto 10px}
+.hero{min-height:590px}
+@media(max-width:900px){.site-header .header-horizontal-logo{width:min(300px,57vw)}}
+@media(max-width:600px){.site-header .header-horizontal-logo{width:min(240px,58vw)}.hero .hero-horizontal-logo{width:94vw}.hero{min-height:430px}}
