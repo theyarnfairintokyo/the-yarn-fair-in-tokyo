@@ -1,6 +1,6 @@
 
 :root{
-  --plum:#3A4A5A;
+  --plum:#354858;
   --plum-soft:#F3F5F7;
   --white:#FFFFFF;
   --line:#D5DEE5;
@@ -555,4 +555,4 @@ html[lang="en"] .nav-item small{
 @media(max-width:600px){.cms-company-row{grid-template-columns:1fr}.cms-order{display:none}.cms-row-actions{grid-column:auto;padding-left:0}.cms-row-actions .btn{flex:1;text-align:center}.cms-editor-head{flex-direction:column}.cms-sticky-actions{position:static;flex-direction:column;align-items:stretch;margin:20px 0 0;padding:16px 0 0;background:#fff}.cms-sticky-actions .phase-actions{display:grid;grid-template-columns:1fr 1fr}.cms-controls>*{width:100%!important;max-width:none!important}}
 
 /* March 2027 Tokyo/Seoul campaign: match the navy-blue-grey used on the organizer's business card. */
-.hero-icon{filter: grayscale(1) sepia(.18) saturate(1.1) hue-rotate(175deg);}
+.hero-icon.official-card-logo{width:330px;max-width:70vw;filter:none;margin-bottom:24px;}
