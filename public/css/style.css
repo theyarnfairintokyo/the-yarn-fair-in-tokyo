@@ -613,3 +613,12 @@ html[lang="en"] .nav-item small{
 .hero{min-height:590px}
 @media(max-width:900px){.site-header .header-horizontal-logo{width:min(300px,57vw)}}
 @media(max-width:600px){.site-header .header-horizontal-logo{width:min(240px,58vw)}.hero .hero-horizontal-logo{width:94vw}.hero{min-height:430px}}
+
+
+/* Approved March 2027 arrangement: yarn ball ABOVE full Tokyo name, header TEXT ONLY. */
+.site-header .header-text-only-logo{display:block;width:min(390px,36vw);max-width:100%;height:auto}
+.hero .hero-stacked-logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;margin:0 auto 22px}
+.hero .hero-ball-only{display:block;width:clamp(165px,19vw,248px);height:auto;max-width:55vw}
+.hero .hero-text-only{display:block;width:min(1000px,88vw);height:auto;max-width:100%}
+@media(max-width:900px){.site-header .header-text-only-logo{width:min(310px,54vw)}}
+@media(max-width:600px){.site-header .header-text-only-logo{width:min(245px,60vw)}.hero .hero-ball-only{width:165px}.hero .hero-text-only{width:94vw}.hero .hero-stacked-logo{gap:8px}}
