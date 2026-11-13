@@ -624,9 +624,9 @@ html[lang="en"] .nav-item small{
 @media(max-width:600px){.site-header .header-text-only-logo{width:min(245px,60vw)}.hero .hero-ball-only{width:165px}.hero .hero-text-only{width:94vw}.hero .hero-stacked-logo{gap:8px}}
 
 /* Verified inline artwork, no image URL/cache dependencies. */
-.site-header .header-title-vector{display:block!important;width:min(390px,35vw)!important;height:auto!important;max-width:100%!important}
+.site-header .header-title-vector{display:block!important;width:min(195px,17.5vw)!important;height:auto!important;max-width:100%!important}
 .hero .hero-stacked-identity{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:22px!important;width:min(1100px,94vw)!important;margin:0 auto 28px!important}
 .hero .hero-ball-vector{display:block!important;width:clamp(165px,19vw,230px)!important;height:auto!important;flex:none!important}
 .hero .hero-title-vector{display:block!important;width:min(525px,45vw)!important;height:auto!important;flex:none!important}
-@media(max-width:900px){.site-header .header-title-vector{width:min(300px,55vw)!important}}
-@media(max-width:600px){.site-header .header-title-vector{width:min(245px,60vw)!important}.hero .hero-stacked-identity{gap:14px!important}.hero .hero-ball-vector{width:165px!important}.hero .hero-title-vector{width:47vw!important}}
+@media(max-width:900px){.site-header .header-title-vector{width:min(150px,27.5vw)!important}}
+@media(max-width:600px){.site-header .header-title-vector{width:min(122.5px,30vw)!important}.hero .hero-stacked-identity{gap:14px!important}.hero .hero-ball-vector{width:165px!important}.hero .hero-title-vector{width:47vw!important}}
