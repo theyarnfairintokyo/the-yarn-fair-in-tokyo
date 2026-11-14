@@ -13,6 +13,11 @@ async function authenticatedAdmin(request) {
   });
   const { data: { user }, error } = await client.auth.getUser(auth);
   if (error || !user) return null;
+  if (user.id !== '269fc015-9bc4-4ac6-8f6d-9acdd0893a59') return null;
+  // The token has already been validated by Supabase getUser above.
+  let claims;
+  try { claims = JSON.parse(Buffer.from(auth.split('.')[1], 'base64url').toString('utf8')); } catch { return null; }
+  if (claims.aal !== 'aal2' || claims.sub !== user.id) return null;
   const admin = adminClient();
   const { data: profile, error: profileError } = await admin
     .from('staff_profiles')
