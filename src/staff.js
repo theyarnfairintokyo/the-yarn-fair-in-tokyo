@@ -150,9 +150,73 @@ async function sessionAndProfile() {
   return { ok: true, session, profile };
 }
 
+
+async function ownerMfa(auth) {
+  const { data: level, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (error) throw error;
+  if (level.currentLevel === 'aal2') return true;
+  const { data: factors, error: listError } = await supabase.auth.mfa.listFactors();
+  if (listError) throw listError;
+  let factor = factors.totp.find(f => f.status === 'verified');
+  const panel = document.createElement('section');
+  panel.className = 'phase-shell';
+  panel.innerHTML = '<div class="phase-card"><h2>管理者 二段階認証</h2><p data-mfa-help></p><div data-mfa-qr></div><form><label>認証アプリの6桁コード<input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label><button class="btn primary" type="submit">認証する</button></form><p role="status"></p><button class="btn" type="button" data-cancel-mfa>ログアウト</button></div>';
+  const form = panel.querySelector('form');
+  const message = panel.querySelector('[role="status"]');
+  const help = panel.querySelector('[data-mfa-help]');
+  const qr = panel.querySelector('[data-mfa-qr]');
+  if (!factor) {
+    for (const old of (factors.all || []).filter(f => f.factor_type === 'totp' && f.status === 'unverified')) {
+      const { error: cleanupError } = await supabase.auth.mfa.unenroll({factorId: old.id});
+      if (cleanupError) throw cleanupError;
+    }
+    const { data, error: enrollError } = await supabase.auth.mfa.enroll({factorType:'totp', friendlyName:'THE YARN FAIR IN TOKYO'});
+    if (enrollError) throw enrollError;
+    factor = data;
+    help.textContent = '初回のみ：スマートフォンの認証アプリでQRコードを読み取ってください。QRコードや秘密キーは他人に共有しないでください。';
+    const img = document.createElement('img');
+    img.alt = '認証アプリ登録用QRコード';
+    img.width = 200;
+    img.height = 200;
+    img.src = data.totp.qr_code.startsWith('data:') ? data.totp.qr_code : 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data.totp.qr_code);
+    qr.append(img);
+  } else {
+    help.textContent = '認証アプリに表示される6桁のコードを入力してください。';
+  }
+  const login = document.querySelector('#staff-login');
+  if (login) login.hidden = true;
+  const root = document.querySelector('[data-protected-admin]') || login?.closest('section') || document.querySelector('footer');
+  if (root && root !== login?.closest('section')) root.before(panel);
+  else if (root) root.after(panel);
+  else document.body.append(panel);
+  panel.querySelector('[data-cancel-mfa]').addEventListener('click', async () => { await supabase.auth.signOut(); location.replace('/staff-login.html'); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const button = form.querySelector('button');
+    button.disabled = true;
+    try {
+      const { error: verifyError } = await supabase.auth.mfa.challengeAndVerify({factorId:factor.id,code:form.elements.code.value.trim()});
+      if (verifyError) throw verifyError;
+      qr.replaceChildren();
+      const auth = await sessionAndProfile();
+    if (!auth.ok) { await supabase.auth.signOut(); if(message) message.textContent = '管理権限がありません。'; return; }
+    location.replace(auth.profile.role === 'admin' ? '/admin.html' : '/checkin.html');
+    } catch { message.textContent = '認証できませんでした。最新の6桁コードを入力してください。'; }
+    finally { button.disabled = false; }
+  });
+  return false;
+}
+
 async function requireStaff() {
   const auth = await sessionAndProfile();
-  if (auth.ok) return auth;
+  if (auth.ok) {
+    if (document.querySelector('[data-admin-dashboard]')) {
+      if (auth.profile.role !== 'admin') { location.replace('/checkin.html'); return null; }
+      try { if (!(await ownerMfa(auth))) return null; }
+      catch { await supabase.auth.signOut(); location.replace('/staff-login.html'); return null; }
+    }
+    return auth;
+  }
 
   if (auth.reason === 'no_session') {
     location.replace('/staff-login.html');
@@ -160,7 +224,7 @@ async function requireStaff() {
   }
 
   const protectedAdmin = document.querySelector('[data-protected-admin]');
-  if (protectedAdmin) protectedAdmin.hidden = false;
+  if (protectedAdmin) { await supabase.auth.signOut(); location.replace('/staff-login.html'); return null; }
   const mount = document.querySelector('[data-admin-dashboard], [data-checkin-result]');
   if (mount) {
     mount.innerHTML = `
